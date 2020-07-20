@@ -1,0 +1,16 @@
+<!--pages/component/iaudio.wxml-->
+<view class="audio-wrapper">
+    <image src="static/{{ico}}.png" class="ico" bindtap="display"></image>
+
+    <view class="words">
+        <view class="song-name">
+            {{songName}}
+        </view>
+        <view class="singer">
+            {{singer}}
+        </view>
+    </view>
+    <view class="duration">
+        {{duration}}
+    </view>
+</view>

@@ -8,7 +8,7 @@ Page({
   onLoad: function () {
     var me = this;
     var user = app.getGlobalUserInfo();
-    if (user != null  && user.nickname != null) {
+    if (user != null && user.nickname != null) {
       if (user.faceImage != null && user.faceImage != undefined && user.faceImage != '') {
         me.setData({
           faceUrl: app.serverUrl + user.faceImage,
@@ -53,7 +53,7 @@ Page({
 
 
   },
-  changeFace: function (params) {
+  changeFace: function () {
     var me = this
     wx.chooseImage({
       count: 1,
@@ -98,6 +98,33 @@ Page({
             }
           }
         })
+      }
+    })
+  },
+  uploadVideo: function () {
+    var me = this;
+    wx.chooseVideo({
+      sourceType: ['album', 'camera'],
+      maxDuration: 20,
+      camera: 'back',
+      success(res) {
+        console.log(res.tempFilePath)
+        var duration = res.duration;
+        if (duration > 21) {
+          wx.showToast({
+            title: '视频长度不能超过20s',
+            icon: 'error'
+          })
+        } else if (duration < 1) {
+          wx.showToast({
+            title: '视频长度不能小于1s',
+            icon: 'error'
+          })
+        } else {
+          wx.navigateTo({
+            url: '../chooseBgm/chooseBgm',
+          })
+        }
       }
     })
   }
