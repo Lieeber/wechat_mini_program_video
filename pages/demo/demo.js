@@ -1,7 +1,9 @@
 Page({
     data: {
+        todolist:[false,false,true,true],
         show: false,
-        list:["fdfd",233,true,{bb:"我是对象"}]
+        list:["fdfd",233,true,{bb:"我是对象"}],
+        iValue:"默認數據"
     },
     onLoad: function (options) {
 
@@ -12,5 +14,16 @@ Page({
         this.setData({
             show: this.data.show
         })
+    },
+    clickItem(event){
+        for (let i = 0; i < this.data.todolist.length; i++) {
+            this.data.todolist[i] = true
+        }
+        this.data.todolist[event.detail.index] = false
+        this.setData({
+            todolist: this.data.todolist
+        })
+        console.log("我是通過組件觸發的"+event.detail.index)
+
     }
 });

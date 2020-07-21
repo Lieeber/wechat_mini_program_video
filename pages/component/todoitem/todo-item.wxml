@@ -1,0 +1,6 @@
+
+<view class="container">
+    <view class="dot" hidden = "{{iHidden}}">
+    </view>
+    <view class="content" bindtap="clickText" data-inner-data="我是內部data">{{iText}}</view>
+</view>

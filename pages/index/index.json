@@ -1,5 +1,5 @@
 {
   "usingComponents": {
-    "iaudio": "/pages/component/iaudio/iaudio"
+    "iaudio": "/pages/component/todoitem/todo-item"
   }
 }
