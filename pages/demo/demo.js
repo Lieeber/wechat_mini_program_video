@@ -1,12 +1,16 @@
 Page({
-    data: {},
+    data: {
+        show: false,
+        list:["fdfd",233,true,{bb:"我是对象"}]
+    },
     onLoad: function (options) {
 
     },
     clickView2: function (e) {
-        let selectorQuery = wx.createSelectorQuery();
-        let nodesRef1 = selectorQuery.select("#view1");
-        console.log("======" + nodesRef1.dataset.text)
-        debugger
+        this.data.show = !this.data.show;
+        console.log(this.data.show)
+        this.setData({
+            show: this.data.show
+        })
     }
 });

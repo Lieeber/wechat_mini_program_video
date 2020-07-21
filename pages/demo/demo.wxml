@@ -1,3 +1,12 @@
-<view id="view1">第一个view</view>
+<view id="view1" hidden="{{show}}">第一个view</view>
 
 <view id="view2" bindtap="clickView2">第二个view</view>
+
+<block wx:for="{{list}}">
+    <view id="{{item}}">我是第{{item}}:{{index}}个元素</view>
+</block>
+
+
+<view wx:for="{{list}}" id="{{item}}">
+    我是第{{item}}:{{index}}个元素
+</view>
