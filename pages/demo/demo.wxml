@@ -1,0 +1,3 @@
+<view id="view1">第一个view</view>
+
+<view id="view2" bindtap="clickView2">第二个view</view>
