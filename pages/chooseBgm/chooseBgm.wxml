@@ -4,7 +4,7 @@
 			<block wx:for="{{bgmList}}">
 				<view class='items'>
 					<iaudio songName="{{item.name}}" singer="{{item.author}}" src="{{serverUrl}}{{item.path}}" style='width:100%' 
-          id="myAudio{{position}}" bindtapDisplay="tapDisplay" bindonIAudioReady="IAudioReady"></iaudio>
+          id="myAudio{{index}}" bindtapDisplay="tapDisplay" bindonIAudioReady="IAudioReady"></iaudio>
 					<radio style="margin-left:20rpx" value='{{item.id}}'></radio>
 				</view>
 			</block>
