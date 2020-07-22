@@ -6,13 +6,22 @@ Page({
         iValue:"默認數據"
     },
     onLoad: function (options) {
-
     },
     clickView2: function (e) {
-        this.data.show = !this.data.show;
-        console.log(this.data.show)
-        this.setData({
-            show: this.data.show
+        // this.data.show = !this.data.show;
+        // console.log(this.data.show)
+        // this.setData({
+        //     show: this.data.show
+        // })
+        const query = wx.createSelectorQuery()
+        console.log(query.select("#view1"))
+        query.select('#view1').boundingClientRect()
+        query.selectViewport().scrollOffset()
+
+        query.exec(function (res) {
+
+            console.log(res) //res中有该节点的详细信息
+
         })
     },
     clickItem(event){

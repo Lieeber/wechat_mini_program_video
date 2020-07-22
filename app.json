@@ -1,11 +1,11 @@
 {
   "pages": [
-    "pages/demo/demo",
-    "pages/chooseBgm/chooseBgm",
     "pages/userLogin/login",
+    "pages/chooseBgm/chooseBgm",
     "pages/index/index",
     "pages/mine/mine",
-    "pages/userRegist/regist"
+    "pages/userRegist/regist",
+    "pages/demo/demo"
   ],
 
   "style": "v2",

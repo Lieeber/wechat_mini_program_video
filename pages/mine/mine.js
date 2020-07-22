@@ -48,10 +48,6 @@ Page({
         }
       })
     }
-
-
-
-
   },
   changeFace: function () {
     var me = this
@@ -109,7 +105,10 @@ Page({
       camera: 'back',
       success(res) {
         console.log(res.tempFilePath)
-        var duration = res.duration;
+        const duration = res.duration;
+        let videoHeight = res.height;
+        let videoWidth = res.width;
+        let videoUrl = res.tempFilePath;
         if (duration > 21) {
           wx.showToast({
             title: '视频长度不能超过20s',
@@ -122,7 +121,9 @@ Page({
           })
         } else {
           wx.navigateTo({
-            url: '../chooseBgm/chooseBgm',
+            url: '../chooseBgm/chooseBgm?videoUrl='
+                +videoUrl+"&duration="+duration+"&videoHeight="
+            +videoHeight+"&videoWidth="+videoWidth,
           })
         }
       }
