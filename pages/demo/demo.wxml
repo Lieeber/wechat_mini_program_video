@@ -1,4 +1,4 @@
-<view id="view1" hidden="{{show}}">第一个view</view>
+<view id="view1" hidden="{{show}}" data-mydata="自定义的data">第一个view</view>
 
 <view id="view2" bindtap="clickView2">第二个view</view>
 

@@ -6,7 +6,6 @@ Page({
         iValue: "默認數據"
     },
     onLoad: function (options) {
-
     },
     clickView2: function (e) {
         // this.data.show = !this.data.show;
@@ -14,8 +13,16 @@ Page({
         // this.setData({
         //     show: this.data.show
         // })
-        let todo1 = this.selectComponent("#todo1");
-        console.log(todo1.data.iText)
+        const query = wx.createSelectorQuery()
+        console.log(query.select("#view1"))
+        query.select('#view1').boundingClientRect()
+        query.selectViewport().scrollOffset()
+
+        query.exec(function (res) {
+
+            console.log(res) //res中有该节点的详细信息
+
+        })
     },
     clickItem(event) {
         for (let i = 0; i < this.data.todolist.length; i++) {
