@@ -5,17 +5,31 @@
 <block wx:for="{{list}}">
     <view id="{{item}}">我是第{{item}}:{{index}}个元素</view>
 </block>
-.
+        .
 
 <todo-item iHidden="{{todolist[0]}}" iIndex="0" id="todo1"
            iText="今天洗衣服" bindclickText="clickItem"
-            data-my-data="fdfdfdfdfdf"
+           data-my-data="fdfdfdfdfdf"
 ></todo-item>
 
 <todo-item iHidden="{{todolist[1]}}" iIndex="1" id="todo2" iText="{{iValue}}" bindclickText="clickItem"></todo-item>
 <todo-item iHidden="{{todolist[2]}}" iIndex="2" id="todo3" iText="明天去健身" bindclickText="clickItem"></todo-item>
 <todo-item iHidden="{{todolist[3]}}" iIndex="3" id="todo4" iText="明晚要打扫房间" bindclickText="clickItem"></todo-item>
-
-
 <input type="text" style="color: black" model:value="{{iValue}}">fdfdfd</input>
 <view>{{iValue}}</view>
+
+<view id="line"></view>
+<radio-group>
+    <view id="radio_item">
+        <radio></radio>
+        <view>我是文本</view>
+    </view>
+    <view id="radio_item">
+        <radio></radio>
+        <view>我是文本</view>
+    </view>
+    <view id="radio_item">
+        <radio></radio>
+        <view>我是文本</view>
+    </view>
+</radio-group>
