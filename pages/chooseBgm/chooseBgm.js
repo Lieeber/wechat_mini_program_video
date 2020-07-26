@@ -56,8 +56,9 @@ Page({
         console.log(app.getGlobalUserInfo().userToken)
         console.log(e.detail.value.bgmId)
         console.log(me.data.videoWidth)
-        console.log( me.data.videoHeight)
-        console.log( e.detail.value.desc)
+        console.log(me.data.videoHeight)
+        console.log(e.detail.value.desc)
+        console.log(me.data.duration)
         wx.uploadFile({
             url: app.serverUrl + "/video/upload",
             filePath: this.data.videoUrl,
@@ -70,7 +71,8 @@ Page({
                 bgmId: e.detail.value.bgmId,
                 videoWidth: me.data.videoWidth,
                 videoHeight: me.data.videoHeight,
-                desc: e.detail.value.desc
+                desc: e.detail.value.desc,
+                duration: me.data.duration
             },
             success(res) {
                 wx.hideLoading();
