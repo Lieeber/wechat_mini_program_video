@@ -8,7 +8,6 @@ App({
   },
   getGlobalUserInfo: function () {
     var info = wx.getStorageSync("userInfo");
-    console.log(info.userToken+"=================================")
     return info
   },
 
