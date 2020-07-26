@@ -84,11 +84,12 @@ Page({
                     });
 
                 } else {
-                    wx.showToast({
-                        title: data.msg,
-                        icon: 'none',
-                        duration: 3000
-                    });
+                    console.log(res)
+                    // wx.showToast({
+                    //     title: data.msg,
+                    //     icon: 'none',
+                    //     duration: 3000
+                    // });
                 }
             }
         })
