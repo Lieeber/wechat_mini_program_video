@@ -1,9 +1,17 @@
-<block wx:for="{{songList}}">
-    <iaudio
-            src="{{item.src}}"
-            songName="{{item.songName}}"
-            singer="{{item.singer}}"
-            duration="{{item.duration}}"
-    ></iaudio>
-</block>
+  <view wx:for="{{videoList}}" class="item-container">  
 
+     <view style='width:{{screenWidth}}px;height:420rpx;' class='back-img'>
+        <image src="{{serverUrl}}{{item.coverPath}}" style='width:{{screenWidth}}px;height:420rpx;'
+            mode="aspectFit" bindtap='showVideoInfo' data-arrindex='{{index}}'></image>
+     </view> 
+
+
+    <view class="desc">
+        <view class="faceName">
+            <image class='myface' src="{{serverUrl}}{{item.faceImage}}"></image>
+            <view class="nickname">{{item.nickName}}</view>
+        </view>
+    </view>
+
+
+  </view>  

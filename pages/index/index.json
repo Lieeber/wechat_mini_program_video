@@ -1,5 +1,4 @@
 {
-  "usingComponents": {
-    "iaudio": "/pages/component/todoitem/todo-item"
-  }
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
 }
