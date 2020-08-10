@@ -1,68 +1,54 @@
+import commonUtil from '../../utils/CommonUtil'
+
 const app = getApp()
 
 Page({
-  data: {
+    data: {
+        defaultUserName: "imooc",
+        defaultPassword: "imooc"
+    },
+    doRegister: function (e) {
+        const formObject = e.detail.value;
+        const username = formObject.username;
+        const password = formObject.password;
+        if (username.length === 0 || password.length === 0) {
+            commonUtil.showToast('用户名或密码不能为空')
+        } else {
+            const serverUrl = app.serverUrl;
+            commonUtil.showLoading('请等待');
+            wx.request({
+                url: serverUrl + '/user/register',
+                method: "POST",
+                data: {
+                    username,
+                    password
+                },
+                success: function (res) {
+                    console.log(res.data);
+                    commonUtil.hideLoading();
+                    const status = res.data.code;
+                    if (status === 200) {
+                        commonUtil.showToast("用户注册成功~！！！")
+                        app.setGlobalUserInfo(res.data.data);
+                        app.setCookie(res.header['Set-cookie'])
+                        // 页面跳转
+                        wx.redirectTo({
+                            url: '../mine/mine',
+                        })
+                    } else if (status === 500) {
+                        commonUtil.showToast(res.data.message)
+                    } else {
+                        commonUtil.showToast('未知错误')
 
-  },
-  doRegist: function (e) {
-    var me = this;
-    var formObject = e.detail.value;
-    var username = formObject.username;
-    var password = formObject.password;
-    // 简单验证
-    if (username.length == 0 || password.length == 0) {
-      wx.showToast({
-        title: '用户名或密码不能为空',
-        icon: 'none',
-        duration: 3000
-      })
-    } else {
-      var serverUrl = app.serverUrl;
-      wx.showLoading({
-        title: '请等待...',
-      });
-      wx.request({
-        url: serverUrl + '/user/register',
-        method: "POST",
-        data: {
-          username: username,
-          password: password
-        },
-        header: {
-          'content-type': 'application/json'
-        },
-        success: function (res) {
-          console.log(res.data);
-          wx.hideLoading();
-          var status = res.data.status;
-          if (status == 200) {
-            wx.showToast({
-                title: "用户注册成功~！！！",
-                icon: 'none',
-                duration: 3000
-              }),
-              // app.userInfo = res.data.data;
-              // fixme 修改原有的全局对象为本地缓存
-              app.setGlobalUserInfo(res.data.data);
-            // 页面跳转
-            wx.redirectTo({
-              url: '../mine/mine',
+                    }
+                }
             })
-          } else if (status == 500) {
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none',
-              duration: 3000
-            })
-          }
         }
-      })
-    }
-  },
+    },
 
-  goLoginPage: function () {
-    wx.navigateTo({
-      url: '../userLogin/login',
-    })
-  }
+    goLoginPage: function () {
+        wx.navigateTo({
+            url: '../userLogin/login',
+        })
+    }
 })

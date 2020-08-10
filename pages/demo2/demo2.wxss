@@ -1,0 +1,10 @@
+.myinput{
+    background-color: yellow;
+    border-radius: 50rpx;
+    padding: 10rpx;
+    height: 50px;
+    margin: 10rpx;
+    border-width: 1px;
+    border-style: solid;
+    border-color: blue;
+}

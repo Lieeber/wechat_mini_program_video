@@ -1,0 +1,7 @@
+<template name="item">
+    <view>
+        我是在外部定义的一个模板
+    </view>
+    <text>{{name}}</text>
+    {{age}}
+</template>

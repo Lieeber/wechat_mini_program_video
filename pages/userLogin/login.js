@@ -1,90 +1,77 @@
+import commonUtil from '../../utils/CommonUtil'
+
 const app = getApp()
 
 Page({
-  data: {
-  },
+    data: {
+        defaultUserName: "imooc",
+        defaultPassword: "imooc"
+    },
 
-  onLoad: function (params) {
-    var me = this;
-    var redirectUrl = params.redirectUrl;
-    // debugger;
-    if (redirectUrl != null && redirectUrl != undefined && redirectUrl != '') {
-      redirectUrl = redirectUrl.replace(/#/g, "?");
-      redirectUrl = redirectUrl.replace(/@/g, "=");
+    onLoad: function (params) {
+        const me = this;
+        let redirectUrl = params.redirectUrl;
+        // debugger;
+        if (redirectUrl != null && redirectUrl !== '') {
+            redirectUrl = redirectUrl.replace(/#/g, "?");
+            redirectUrl = redirectUrl.replace(/@/g, "=");
 
-      me.redirectUrl = redirectUrl;
-    }
-  },
-
-  // 登录  
-  doLogin: function (e) {
-    var me = this;
-    var formObject = e.detail.value;
-    var username = formObject.username;
-    var password = formObject.password;
-    // 简单验证
-    if (username.length == 0 || password.length == 0) {
-      wx.showToast({
-        title: '用户名或密码不能为空',
-        icon: 'none',
-        duration: 3000
-      })
-    } else {
-      var serverUrl = app.serverUrl;
-      wx.showLoading({
-        title: '请等待...',
-      });
-      // 调用后端
-      wx.request({
-        url: serverUrl + '/user/login',
-        method: "POST",
-        data: {
-          username: username,
-          password: password
-        },
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        success: function (res) {
-          console.log(res.data);
-          wx.hideLoading();
-          if (res.data.status === 200) {
-            // 登录成功跳转 
-            wx.showToast({
-              title: '登录成功',
-              icon: 'success',
-              duration: 2000
-            });
-            // app.userInfo = res.data.data;
-            app.setGlobalUserInfo(res.data.data);
-            // 页面跳转
-            var redirectUrl = me.redirectUrl;
-            if (redirectUrl != null && redirectUrl != undefined && redirectUrl != '') {
-              wx.redirectTo({
-                url: redirectUrl,
-              })
-            } else {
-              wx.redirectTo({
-                url: '../mine/mine',
-              })
-            }
-            
-          } else if (res.data.status == 500) {
-            // 失败弹出框
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none',
-              duration: 3000
-            })
-          }
+            me.redirectUrl = redirectUrl;
         }
-      })
-    }
-  },
+    },
 
-  goRegistPage:function() {
-    wx.redirectTo({
-      url: '../userRegist/regist',
-    })
-  }
+    // 登录
+    doLogin: function (e) {
+        const me = this;
+        const formObject = e.detail.value;
+        const username = formObject.username;
+        const password = formObject.password;
+        // 简单验证
+        if (username.length === 0 || password.length === 0) {
+            commonUtil.showToast('用户名或密码不能为空')
+        } else {
+            var serverUrl = app.serverUrl;
+            commonUtil.showLoading('请等待...')
+            wx.request({
+                url: serverUrl + '/user/login',
+
+                method: "POST",
+                data: {
+                    username: username,
+                    password: password
+                },
+                success: function (res) {
+                    console.log("=======", res);
+                    commonUtil.hideLoading()
+                    if (res.data.code === 200) {
+                        commonUtil.showToast('登录成功')
+                        app.setGlobalUserInfo(res.data.data);
+                        app.setCookie(res.header['Set-Cookie']);
+                        // 页面跳转
+                        const redirectUrl = me.redirectUrl;
+                        if (redirectUrl != null && redirectUrl !== '') {
+                            wx.redirectTo({
+                                url: redirectUrl,
+                            })
+                        } else {
+                            wx.redirectTo({
+                                url: '../mine/mine',
+                            })
+                        }
+
+                    } else if (res.data.code === 500) {
+                        commonUtil.showToast(res.data.message)
+                    } else {
+                        commonUtil.showToast('未知错误')
+                    }
+                }
+            })
+        }
+    },
+
+    goRegistPage: function () {
+        wx.redirectTo({
+            url: '../userRegist/regist',
+        })
+    }
 })

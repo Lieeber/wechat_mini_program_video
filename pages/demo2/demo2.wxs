@@ -1,0 +1,11 @@
+var name = '李兵'
+var age = 29
+var method =function (obj){
+    return obj
+}
+
+module.exports = {
+    name:name,
+    age:age,
+    method:method
+}
