@@ -23,34 +23,35 @@ Page({
         //         nickname: user.nickname
         //     })
         // } else {
-            commonUtils.showLoading("请等待")
-        app.getCookie();
-        debugger
-            wx.request({
-                url: app.serverUrl + "/user/query?userId=" + "180425CFA4RB6T0H",
-                method: 'GET',
-                header: {
-                    'cookie': app.getCookie()
-                },
-                success: function (res) {
-                    commonUtils.hideLoading()
-                    if (res.data.code === 200) {
-                        const userInfo = res.data.data;
-                        app.setGlobalUserInfo(userInfo)
-                        let faceUrl = '../../resource/images/noneface.png';
-                        if (userInfo.faceImage != null && userInfo.faceImage !== '' && userInfo.faceImage !== undefined) {
-                            faceUrl = app.serverUrl + userInfo.faceImage;
-                            me.setData({
-                                faceUrl: faceUrl,
-                                fansCounts: userInfo.fansCounts,
-                                followCounts: userInfo.followCounts,
-                                receiveLikeCounts: userInfo.receiveLikeCounts,
-                                nickname: userInfo.nickname
-                            })
-                        }
+
+        commonUtils.showLoading("请等待")
+        console.log("===========", app.getCookie())
+        console.log("===========", app.getGlobalUserInfo())
+        wx.request({
+            url: app.serverUrl + "/user/query?userId=" + "180425CFA4RB6T0H",
+            method: 'GET',
+            header: {
+                'cookie': app.getCookie()
+            },
+            success: function (res) {
+                commonUtils.hideLoading()
+                if (res.data.code === 200) {
+                    const userInfo = res.data.data;
+                    app.setGlobalUserInfo(userInfo)
+                    let faceUrl = '../../resource/images/noneface.png';
+                    if (userInfo.faceImage != null && userInfo.faceImage !== '' && userInfo.faceImage !== undefined) {
+                        faceUrl = app.serverUrl + userInfo.faceImage;
+                        me.setData({
+                            faceUrl: faceUrl,
+                            fansCounts: userInfo.fansCounts,
+                            followCounts: userInfo.followCounts,
+                            receiveLikeCounts: userInfo.receiveLikeCounts,
+                            nickname: userInfo.nickname
+                        })
                     }
                 }
-            })
+            }
+        })
         // }
     },
     changeFace: function () {

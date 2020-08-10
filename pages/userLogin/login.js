@@ -30,11 +30,10 @@ Page({
         if (username.length === 0 || password.length === 0) {
             commonUtil.showToast('用户名或密码不能为空')
         } else {
-            var serverUrl = app.serverUrl;
+            const serverUrl = app.serverUrl;
             commonUtil.showLoading('请等待...')
             wx.request({
                 url: serverUrl + '/user/login',
-
                 method: "POST",
                 data: {
                     username: username,

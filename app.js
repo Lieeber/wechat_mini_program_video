@@ -1,6 +1,7 @@
 //app.js
 App({
-    serverUrl: "http://192.168.2.153:8080",
+    serverUrl: "http://192.168.199.169:8080",
+
     setGlobalUserInfo: function (user) {
         wx.setStorageSync("userInfo", user);
     },
