@@ -40,7 +40,6 @@ Page({
                     password: password
                 },
                 success: function (res) {
-                    console.log("=======", res);
                     commonUtil.hideLoading()
                     if (res.data.code === 200) {
                         commonUtil.showToast('登录成功')
@@ -54,7 +53,7 @@ Page({
                             })
                         } else {
                             wx.redirectTo({
-                                url: '../mine/mine',
+                                url: '../mine/mine?isMe=true',
                             })
                         }
 

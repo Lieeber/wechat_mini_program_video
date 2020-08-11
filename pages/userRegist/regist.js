@@ -47,7 +47,7 @@ Page({
     },
 
     goLoginPage: function () {
-        wx.navigateTo({
+        wx.redirectTo({
             url: '../userLogin/login',
         })
     }

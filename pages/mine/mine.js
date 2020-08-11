@@ -7,52 +7,54 @@ Page({
         faceUrl: '../../resource/images/noneface.png',
         isMe: true
     },
-    onLoad: function () {
+    onLoad: function (param) {
         const me = this;
+        const isMe = param.isMe
         const user = app.getGlobalUserInfo();
-        // if (user != null && user.nickname != null) {
-        //     if (user.faceImage != null && user.faceImage !== '') {
-        //         me.setData({
-        //             faceUrl: app.serverUrl + user.faceImage,
-        //         })
-        //     }
-        //     me.setData({
-        //         fansCounts: user.fansCounts,
-        //         followCounts: user.followCounts,
-        //         receiveLikeCounts: user.receiveLikeCounts,
-        //         nickname: user.nickname
-        //     })
-        // } else {
+        console.log("isMe ", isMe)
+        if (isMe === 'true' && user != null && user.nickname != null) {
+            if (user.faceImage != null && user.faceImage !== '') {
+                me.setData({
+                    faceUrl: app.serverUrl + user.faceImage,
+                })
+            }
+            me.setData({
+                fansCounts: user.fansCounts,
+                followCounts: user.followCounts,
+                receiveLikeCounts: user.receiveLikeCounts,
+                nickname: user.nickname,
+                isMe: true
+            })
+        } else {
+            commonUtils.showLoading("请等待")
+            wx.request({
+                url: app.serverUrl + "/user/query?userId=" + "180425CFA4RB6T0H",
+                method: 'GET',
+                header: {
+                    'cookie': app.getCookie()
+                },
 
-        commonUtils.showLoading("请等待")
-        console.log("===========", app.getCookie())
-        console.log("===========", app.getGlobalUserInfo())
-        wx.request({
-            url: app.serverUrl + "/user/query?userId=" + "180425CFA4RB6T0H",
-            method: 'GET',
-            header: {
-                'cookie': app.getCookie()
-            },
-            success: function (res) {
-                commonUtils.hideLoading()
-                if (res.data.code === 200) {
-                    const userInfo = res.data.data;
-                    app.setGlobalUserInfo(userInfo)
-                    let faceUrl = '../../resource/images/noneface.png';
-                    if (userInfo.faceImage != null && userInfo.faceImage !== '' && userInfo.faceImage !== undefined) {
-                        faceUrl = app.serverUrl + userInfo.faceImage;
-                        me.setData({
-                            faceUrl: faceUrl,
-                            fansCounts: userInfo.fansCounts,
-                            followCounts: userInfo.followCounts,
-                            receiveLikeCounts: userInfo.receiveLikeCounts,
-                            nickname: userInfo.nickname
-                        })
+                success: function (res) {
+                    commonUtils.hideLoading()
+                    if (res.data.code === 200) {
+                        const userInfo = res.data.data;
+                        app.setGlobalUserInfo(userInfo)
+                        let faceUrl = '../../resource/images/noneface.png';
+                        if (userInfo.faceImage != null && userInfo.faceImage !== '' && userInfo.faceImage !== undefined) {
+                            faceUrl = app.serverUrl + userInfo.faceImage;
+                            me.setData({
+                                faceUrl: faceUrl,
+                                fansCounts: userInfo.fansCounts,
+                                followCounts: userInfo.followCounts,
+                                receiveLikeCounts: userInfo.receiveLikeCounts,
+                                nickname: userInfo.nickname,
+                                isMe: isMe === "true"
+                            })
+                        }
                     }
                 }
-            }
-        })
-        // }
+            })
+        }
     },
     changeFace: function () {
         const me = this;
@@ -68,7 +70,10 @@ Page({
                 wx.uploadFile({
                     filePath: tempFilePaths[0],
                     name: 'file',
-                    url: app.serverUrl + "/user/upload_avatar?userToken=" + app.getGlobalUserInfo().userToken,
+                    url: app.serverUrl + "/user/upload_avatar",
+                    header: {
+                        'cookie': app.getCookie()
+                    },
                     success(res) {
                         //返回的数据是string，必须先转成json
                         const data = JSON.parse(res.data);
@@ -89,11 +94,13 @@ Page({
         })
     },
     uploadVideo: function () {
-        var me = this;
         wx.chooseVideo({
             sourceType: ['album', 'camera'],
             maxDuration: 20,
             camera: 'back',
+            header: {
+                'cookie': app.getCookie()
+            },
             success(res) {
                 console.log(res.tempFilePath)
                 const duration = res.duration;
@@ -101,21 +108,40 @@ Page({
                 let videoWidth = res.width;
                 let videoUrl = res.tempFilePath;
                 if (duration > 21) {
-                    wx.showToast({
-                        title: '视频长度不能超过20s',
-                        icon: 'error'
-                    })
+                    commonUtils.showToast("视频长度不能超过20s")
                 } else if (duration < 1) {
-                    wx.showToast({
-                        title: '视频长度不能小于1s',
-                        icon: 'error'
-                    })
+                    commonUtils.showToast("视频长度不能小于1s")
                 } else {
                     wx.navigateTo({
                         url: '../chooseBgm/chooseBgm?videoUrl='
                             + videoUrl + "&duration=" + duration + "&videoHeight="
                             + videoHeight + "&videoWidth=" + videoWidth,
                     })
+                }
+            }
+        })
+    },
+    logout() {
+        commonUtils.showLoading("退出登录中。。。")
+        wx.request({
+            url: app.serverUrl + "/user/logout",
+            method: 'POST',
+            header: {
+                'cookie': app.getCookie()
+            },
+            success: function (res) {
+                commonUtils.hideLoading()
+                if (res.data.code === 200) {
+                    app.setGlobalUserInfo("")
+                    app.setCookie("")
+                    commonUtils.showToast("退出登录成功")
+                    wx.redirectTo({
+                        url: '../userLogin/login',
+                    })
+                } else if (res.data.code === 500) {
+                    commonUtils.showToast(res.data.message)
+                } else {
+                    commonUtils.showToast("未知错误")
                 }
             }
         })
