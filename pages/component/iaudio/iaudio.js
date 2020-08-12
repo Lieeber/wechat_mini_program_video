@@ -11,16 +11,14 @@ Component({
         isPlaying: false,
         ico: "play"
     },
-    ready: function () {
+    ready() {
         let myMp3 = wx.createInnerAudioContext();
         myMp3.autoplay = false;
         myMp3.src = this.data.src;
         this.setData({
             myMp3: myMp3
         })
-        this.triggerEvent("onIAudioReady", {
-
-        })
+        this.triggerEvent("onIAudioReady", {})
     },
 
     /**
@@ -42,8 +40,7 @@ Component({
                 ico: "pause"
             })
             if (trigger) {
-                this.triggerEvent("tapDisplay", {
-                });
+                this.triggerEvent("tapDisplay", {});
             }
         }, pauseAudio(trigger) {
             this.data.myMp3.pause();
@@ -52,8 +49,7 @@ Component({
                 ico: "play"
             })
             if (trigger) {
-                this.triggerEvent("tapDisplay", {
-                });
+                this.triggerEvent("tapDisplay", {});
             }
         }
     }

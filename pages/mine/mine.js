@@ -98,9 +98,6 @@ Page({
             sourceType: ['album', 'camera'],
             maxDuration: 20,
             camera: 'back',
-            header: {
-                'cookie': app.getCookie()
-            },
             success(res) {
                 console.log(res.tempFilePath)
                 const duration = res.duration;

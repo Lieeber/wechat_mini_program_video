@@ -1,3 +1,4 @@
+import commonUtil from '../../utils/CommonUtil';
 const app = getApp()
 
 Page({
@@ -16,15 +17,13 @@ Page({
             videoWidth: params.videoWidth,
             videoUrl: params.videoUrl,
         })
-        wx.showLoading({
-            title: '正在加载背景音乐列表'
-        })
+        commonUtil.showLoading('正在加载背景音乐列表')
         wx.request({
             url: app.serverUrl + "/bgm/list",
             method: "GET",
             success(res) {
-                wx.hideLoading();
-                if (res.data.status === 200) {
+                commonUtil.hideLoading()
+                if (res.data.code === 200) {
                     const bgmList = res.data.data;
                     me.setData({
                         bgmList: bgmList,
@@ -48,11 +47,9 @@ Page({
     },
     uploadVideo(e) {
         let me = this;
+        commonUtil.showLoading('视频上传中，请稍等')
         console.log("bgmId:" + e.detail.value.bgmId)
         console.log("desc:" + e.detail.value.desc)
-        wx.showLoading({
-            title: '视频上传中，请稍等'
-        });
         console.log(app.getGlobalUserInfo().userToken)
         console.log(e.detail.value.bgmId)
         console.log(me.data.videoWidth)
@@ -64,10 +61,10 @@ Page({
             filePath: this.data.videoUrl,
             name: 'file',
             header: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                "cookie": app.getCookie()
             },
             formData: {
-                userToken: app.getGlobalUserInfo().userToken,
                 bgmId: e.detail.value.bgmId,
                 videoWidth: me.data.videoWidth,
                 videoHeight: me.data.videoHeight,
@@ -75,23 +72,17 @@ Page({
                 duration: me.data.duration
             },
             success(res) {
-                wx.hideLoading();
+                commonUtil.hideLoading()
                 console.log(res.data)
                 let data = JSON.parse(res.data)
-                if (data.status === 200) {
-                    wx.showToast({
-                        title: '视频上传成功',
-                        icon: 'none',
-                        duration: 3000
-                    });
-
-                } else {
-                    console.log(res)
-                    // wx.showToast({
-                    //     title: data.msg,
-                    //     icon: 'none',
-                    //     duration: 3000
-                    // });
+                if (data.code === 200) {
+                    commonUtil.showToast('视频上传成功')
+                    wx.redirectTo({
+                        url: '../mine/mine?isMe=true',
+                    })
+                } else if (data.code === 500) {
+                    console.log(res);
+                    commonUtil.showToast(data.message);
                 }
             }
         })
